@@ -1,7 +1,9 @@
 
-package com.ashrafishak.crunchbase4j.posts;
+package com.ashrafishak.crunchbase4j.search;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -17,12 +19,11 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
     "crunchbase_url",
-    "name",
-    "num_posts",
-    "permalink",
-    "posts_url"
+    "page",
+    "results",
+    "total"
 })
-public class Techcrunch_posts {
+public class Search {
 
     /**
      * 
@@ -32,23 +33,18 @@ public class Techcrunch_posts {
     /**
      * 
      */
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("page")
+    private Double page;
     /**
      * 
      */
-    @JsonProperty("num_posts")
-    private Double num_posts;
+    @JsonProperty("results")
+    private List<Result> results = new ArrayList<Result>();
     /**
      * 
      */
-    @JsonProperty("permalink")
-    private String permalink;
-    /**
-     * 
-     */
-    @JsonProperty("posts_url")
-    private String posts_url;
+    @JsonProperty("total")
+    private Double total;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
@@ -70,65 +66,49 @@ public class Techcrunch_posts {
     /**
      * 
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("page")
+    public Double getPage() {
+        return page;
     }
 
     /**
      * 
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("page")
+    public void setPage(Double page) {
+        this.page = page;
     }
 
     /**
      * 
      */
-    @JsonProperty("num_posts")
-    public Double getNum_posts() {
-        return num_posts;
+    @JsonProperty("results")
+    public List<Result> getResults() {
+        return results;
     }
 
     /**
      * 
      */
-    @JsonProperty("num_posts")
-    public void setNum_posts(Double num_posts) {
-        this.num_posts = num_posts;
+    @JsonProperty("results")
+    public void setResults(List<Result> results) {
+        this.results = results;
     }
 
     /**
      * 
      */
-    @JsonProperty("permalink")
-    public String getPermalink() {
-        return permalink;
+    @JsonProperty("total")
+    public Double getTotal() {
+        return total;
     }
 
     /**
      * 
      */
-    @JsonProperty("permalink")
-    public void setPermalink(String permalink) {
-        this.permalink = permalink;
-    }
-
-    /**
-     * 
-     */
-    @JsonProperty("posts_url")
-    public String getPosts_url() {
-        return posts_url;
-    }
-
-    /**
-     * 
-     */
-    @JsonProperty("posts_url")
-    public void setPosts_url(String posts_url) {
-        this.posts_url = posts_url;
+    @JsonProperty("total")
+    public void setTotal(Double total) {
+        this.total = total;
     }
 
     @Override
