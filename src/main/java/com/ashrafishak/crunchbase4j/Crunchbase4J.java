@@ -95,39 +95,66 @@ public class Crunchbase4J {
 	}
 	
 	public PersonEntity getEntityPerson(String personPermalink){
-		String url = this.properties.getProperty("entity.person.url");
-		PersonEntity entity = (PersonEntity) this.pullCrunchbaseApi(url, PersonEntity.class);
-		return entity;
+		if (this.personEntityMap.get(personPermalink) != null){
+			return this.personEntityMap.get(personPermalink);
+		} else {
+			String urlFormat = this.properties.getProperty("entity.person.url");
+			String url = String.format(urlFormat, personPermalink, this.apiKey);
+			PersonEntity entity = (PersonEntity) this.pullCrunchbaseApi(url, PersonEntity.class);
+			this.personEntityMap.put(personPermalink, entity);
+			return entity;
+		}
 	}
 	
 	public FinancialOrganizationEntity getEntityFinancialOrg(String financialOrgPermalink){
-		String url = this.properties.getProperty("entity.financial.url");
-		FinancialOrganizationEntity entity = (FinancialOrganizationEntity) this.pullCrunchbaseApi
-																		(url, FinancialOrganizationEntity.class);
-		return entity;
+		if (this.financialOrgEntityMap.get(financialOrgPermalink) != null){
+			return this.financialOrgEntityMap.get(financialOrgPermalink);
+		} else {
+			String urlFormat = this.properties.getProperty("entity.financial.url");
+			String url = String.format(urlFormat, financialOrgPermalink, this.apiKey);
+			FinancialOrganizationEntity entity = (FinancialOrganizationEntity) 
+													this.pullCrunchbaseApi(url, 
+																			FinancialOrganizationEntity.class);
+			this.financialOrgEntityMap.put(financialOrgPermalink, entity);
+			return entity;
+		}
 	}
 	
 	public ProductEntity getEntityProduct(String productPermalink){
-		String url = this.properties.getProperty("entity.product.url");
-		ProductEntity entity = (ProductEntity) this.pullCrunchbaseApi(url, ProductEntity.class);
-		return entity;
+		if (this.productEntityMap.get(productPermalink) != null){
+			return this.productEntityMap.get(productPermalink);
+		} else {
+			String urlFormat = this.properties.getProperty("entity.product.url");
+			String url = String.format(urlFormat, productPermalink, this.apiKey);
+			ProductEntity entity = (ProductEntity) this.pullCrunchbaseApi(url, ProductEntity.class);
+			this.productEntityMap.put(productPermalink, entity);
+			return entity;
+		}
 	}
 	
 	public ServiceProviderEntity getEntityServiceProvider(String svcProviderPermalink){
-		String url = this.properties.getProperty("entity.service.url");
-		ServiceProviderEntity entity = (ServiceProviderEntity) this.pullCrunchbaseApi(url, ServiceProviderEntity.class);
-		return entity;
+		if (this.svcProviderEntityMap.get(svcProviderPermalink) != null){
+			return this.svcProviderEntityMap.get(svcProviderPermalink);
+		} else {
+			String urlFormat = this.properties.getProperty("entity.service.url");
+			String url = String.format(urlFormat, svcProviderPermalink, this.apiKey);
+			ServiceProviderEntity entity = (ServiceProviderEntity) this.pullCrunchbaseApi(url, ServiceProviderEntity.class);
+			this.svcProviderEntityMap.put(svcProviderPermalink, entity);
+			return entity;
+		}
 	}
 	
 	public Entity[] getEntityList(EntityListType type){
-		return null;
+		String urlFormat = this.properties.getProperty("entitylist.url");
+		String url = String.format(urlFormat, type.getPermalink(), this.apiKey);
+		return (Entity[]) this.pullCrunchbaseApi(url, Entity[].class);
 	}
 	
 	public Search getSearch(String keyword){
 		return null;
 	}
 	
-	// if string.size = 2, it is person
+	// if strings.size = 2, it is person
 	public Posts getPosts(PostsType postsType, String... strings){
 		return null;
 	}
