@@ -43,7 +43,24 @@ public class Crunchbase4J {
 	}
 	
 	public enum PostsType {
-		COMPANIES, PEOPLE, FINANCIAL_ORGANIZATIONS, PRODUCTS
+		COMPANIES ("companies"), 
+		PEOPLE ("people"), 
+		FINANCIAL_ORGANIZATIONS ("financial-organizations"), 
+		PRODUCTS ("products");
+		
+		private String namespace;
+		
+		PostsType (String namespace){
+			this.setNamespace(namespace);
+		}
+
+		public String getNamespace() {
+			return namespace;
+		}
+
+		public void setNamespace(String namespace) {
+			this.namespace = namespace;
+		}
 	}
 	
 	private String apiKey = null;
@@ -57,10 +74,10 @@ public class Crunchbase4J {
 	private HashMap<String, ProductEntity> productEntityMap = null;
 	private HashMap<String, ServiceProviderEntity> svcProviderEntityMap = null;
 	
-	// mapping: name --> entitylist
+	// mapping: permalink --> entitylist
 	private HashMap<String, Entity[]> entityListMap = null;
 	
-	// mapping: name --> search
+	// mapping: keyword --> search
 	private HashMap<String, Search> searchMap = null;
 	
 	// mapping: if person, (first name + last name, permalink) --> posts
@@ -145,18 +162,47 @@ public class Crunchbase4J {
 	}
 	
 	public Entity[] getEntityList(EntityListType type){
-		String urlFormat = this.properties.getProperty("entitylist.url");
-		String url = String.format(urlFormat, type.getPermalink(), this.apiKey);
-		return (Entity[]) this.pullCrunchbaseApi(url, Entity[].class);
+		if (this.entityListMap.get(type.getPermalink()) != null){
+			return this.entityListMap.get(type.getPermalink());
+		} else {
+			String urlFormat = this.properties.getProperty("entitylist.url");
+			String url = String.format(urlFormat, type.getPermalink(), this.apiKey);
+			Entity[] list = (Entity[]) this.pullCrunchbaseApi(url, Entity[].class);
+			this.entityListMap.put(type.getPermalink(), list);
+			return list;
+		}
+		
 	}
 	
+	// NOTE: For now, only 'query' parameter can be handled by the API. Need to modify
+			// for other parameters ('geo', 'page' etc)
+	// TODO: Handle other parameters such as 'geo', 'page' etc
 	public Search getSearch(String keyword){
-		return null;
+		if (this.searchMap.get(keyword) != null){
+			return this.searchMap.get(keyword);
+		} else {
+			String urlFormat = this.properties.getProperty("search.url");
+			String url = String.format(urlFormat, keyword, this.apiKey);
+			Search search = (Search) this.pullCrunchbaseApi(url, Search.class);
+			this.searchMap.put(keyword, search);
+			return search;
+		}
 	}
 	
 	// if strings.size = 2, it is person
+	// NOTE: For now, any request to Post is not cached (yet). Need to figure out
+			// the way to map Posts where the case of the name is variable (example: "Bill" or "bill")
 	public Posts getPosts(PostsType postsType, String... strings){
-		return null;
+		String url = null;
+		if (postsType == PostsType.PEOPLE){
+			String urlFormat = this.properties.getProperty("posts.people");
+			url = String.format(urlFormat, strings[0], strings[1], this.apiKey);
+		} else {
+			String urlFormat = this.properties.getProperty("posts.noncompany");
+			url = String.format(urlFormat, postsType.getNamespace(), strings[0], this.apiKey);
+		}
+		Posts posts = (Posts) this.pullCrunchbaseApi(url, Posts.class);
+		return posts;
 	}
 	
 	private Object pullCrunchbaseApi(String url, Class<?> clazz){
