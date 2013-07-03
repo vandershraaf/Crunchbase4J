@@ -29,8 +29,19 @@
 		<version>2.4</version>
 	</dependency>         
   </dependencies>
+  <build>
+  	<resources>
+  		<resource>
+	  		<directory>.</directory>
+	  		<includes>
+	  			<include>default.config</include>
+	  		</includes>
+  		</resource>
+  	</resources>
+  </build>
   <!-- 
   <build>
+  	
   	<plugins>
         <plugin>
             <groupId>com.googlecode.jsonschema2pojo</groupId>

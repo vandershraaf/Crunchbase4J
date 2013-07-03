@@ -13,7 +13,7 @@ public class ConfigProperties {
 		if (properties == null){
 			properties = new Properties();
 			try {
-				properties.load(new FileInputStream("src/main/config/default.config"));
+				properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("default.config"));
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
