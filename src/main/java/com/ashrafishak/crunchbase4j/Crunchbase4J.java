@@ -16,6 +16,16 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * The main class to be used for this Crunchbase4J library. Initialize this class
+ * with your API key.
+ * 
+ * <strong>NOTE: </strong>To improve performance, a request will get the instance
+ * from cache if a similar request has already been done. 
+ * 
+ * @author Muhammad Ashraf Ishak
+ *
+ */
 public class Crunchbase4J {
 	
 	public enum EntityListType {
@@ -98,7 +108,12 @@ public class Crunchbase4J {
 		this.postsMap = new HashMap<Key, Posts>();
 	}
 	
-	// TODO: please use the code from this method for other
+	/**
+	 * Retrieves the <strong>Company</strong> entity from the API
+	 * @param companyPermalink Permalink of the company as defined in the API
+	 * @return A {@link com.ashrafishak.crunchbase4j.entity.CompanyEntity} instance 
+	 * 		
+	 */
 	public CompanyEntity getEntityCompany(String companyPermalink){
 		if (this.companyEntityMap.get(companyPermalink) != null){
 			return this.companyEntityMap.get(companyPermalink);
@@ -111,6 +126,12 @@ public class Crunchbase4J {
 		}
 	}
 	
+	/**
+	 * Retrieves the <strong>Person</strong> entity from the API
+	 * @param companyPermalink Permalink of Person as defined in the API
+	 * @return A {@link com.ashrafishak.crunchbase4j.entity.PersonEntity} instance 
+	 * 		
+	 */
 	public PersonEntity getEntityPerson(String personPermalink){
 		if (this.personEntityMap.get(personPermalink) != null){
 			return this.personEntityMap.get(personPermalink);
@@ -123,6 +144,12 @@ public class Crunchbase4J {
 		}
 	}
 	
+	/**
+	 * Retrieves the <strong>Financial Organization</strong> entity from the API
+	 * @param companyPermalink Permalink of financial organization as defined in the API
+	 * @return A {@link com.ashrafishak.crunchbase4j.entity.FinancialOrganizationEntity} instance 
+	 * 		
+	 */
 	public FinancialOrganizationEntity getEntityFinancialOrg(String financialOrgPermalink){
 		if (this.financialOrgEntityMap.get(financialOrgPermalink) != null){
 			return this.financialOrgEntityMap.get(financialOrgPermalink);
@@ -137,6 +164,12 @@ public class Crunchbase4J {
 		}
 	}
 	
+	/**
+	 * Retrieves the <strong>Product</strong> entity from the API
+	 * @param companyPermalink Permalink of product as defined in the API
+	 * @return A {@link com.ashrafishak.crunchbase4j.entity.ProductEntity} instance 
+	 * 		
+	 */
 	public ProductEntity getEntityProduct(String productPermalink){
 		if (this.productEntityMap.get(productPermalink) != null){
 			return this.productEntityMap.get(productPermalink);
@@ -149,6 +182,12 @@ public class Crunchbase4J {
 		}
 	}
 	
+	/**
+	 * Retrieves the <strong>Service Provider</strong> entity from the API
+	 * @param companyPermalink Permalink of service provider as defined in the API
+	 * @return A {@link com.ashrafishak.crunchbase4j.entity.ServiceProviderEntity} instance 
+	 * 		
+	 */
 	public ServiceProviderEntity getEntityServiceProvider(String svcProviderPermalink){
 		if (this.svcProviderEntityMap.get(svcProviderPermalink) != null){
 			return this.svcProviderEntityMap.get(svcProviderPermalink);
@@ -161,6 +200,14 @@ public class Crunchbase4J {
 		}
 	}
 	
+	/**
+	 * Retrieves the list of all names and its permalink of a category of entity 
+	 * defined by {@code type} parameter. If the user has no knowledge on the specific
+	 * permalink to be used in other methods, then this method comes in handy. 
+	 * 
+	 * @param type A {@link com.ashrafishak.crunchbase4j.Crunchbase4J.EntityListType} type
+	 * @return An array of {@link com.ashrafishak.crunchbase4j.entitylist.Entity} instance
+	 */
 	public Entity[] getEntityList(EntityListType type){
 		if (this.entityListMap.get(type.getPermalink()) != null){
 			return this.entityListMap.get(type.getPermalink());
@@ -174,9 +221,13 @@ public class Crunchbase4J {
 		
 	}
 	
-	// NOTE: For now, only 'query' parameter can be handled by the API. Need to modify
-			// for other parameters ('geo', 'page' etc)
-	// TODO: Handle other parameters such as 'geo', 'page' etc
+	/**
+	 * Return result of search from the API based on {@code keyword} entered. 
+	 * Note that for now, the method only serves for the 'query' parameter of the 
+	 * request. 
+	 * @param keyword Value of the 'query' parameter of the API request
+	 * @return A {@link com.ashrafishak.crunchbase4j.search.Search} instance
+	 */
 	public Search getSearch(String keyword){
 		if (this.searchMap.get(keyword) != null){
 			return this.searchMap.get(keyword);
@@ -189,9 +240,14 @@ public class Crunchbase4J {
 		}
 	}
 	
-	// if strings.size = 2, it is person
-	// NOTE: For now, any request to Post is not cached (yet). Need to figure out
-			// the way to map Posts where the case of the name is variable (example: "Bill" or "bill")
+	/**
+	 * Retrieves the link of Post related to an Entity. If {@code postsType} is PEOPLE, 
+	 * then {@code strings} parameter should have 2 elements. Else, only 1 element
+	 * is needed as input. 
+	 * @param postsType A {@link com.ashrafishak.crunchbase4j.Crunchbase4J.PostsType} instance
+	 * @param strings 
+	 * @return A {@link com.ashrafishak.crunchbase4j.posts.Posts} instance
+	 */
 	public Posts getPosts(PostsType postsType, String... strings){
 		String url = null;
 		if (postsType == PostsType.PEOPLE){
@@ -222,8 +278,17 @@ public class Crunchbase4J {
 		return null;
 	}
 	
+	/**
+	 * Clear the cache. Useful if the user needs to retrieves a fresher data. 
+	 */
 	public void clearCache(){
-		
+		this.companyEntityMap.clear();
+		this.personEntityMap.clear();
+		this.financialOrgEntityMap.clear();
+		this.productEntityMap.clear();
+		this.svcProviderEntityMap.clear();
+		this.entityListMap.clear();
+		this.searchMap.clear();
 	}
 	
 	public String getApiKey() {
@@ -242,13 +307,7 @@ public class Crunchbase4J {
 		this.properties = properties;
 	}
 
-	public static void main(String[] args){
-		Crunchbase4J c = new Crunchbase4J("232324244");
-		String format = c.getProperties().getProperty("entity.company.url");
-		String result = String.format(format, "facebook",c.getApiKey());
-		System.out.println(result);
-		System.out.println(EntityListType.COMPANIES.getPermalink());
-	}
+
 	
 	
 	

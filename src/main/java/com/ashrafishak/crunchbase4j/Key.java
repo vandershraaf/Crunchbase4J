@@ -1,5 +1,10 @@
 package com.ashrafishak.crunchbase4j;
 
+/**
+ * Internal class to identify a key-value mapping. 
+ * @author Muhammad Ashraf Ishak
+ *
+ */
 public class Key {
 
 	private String name;

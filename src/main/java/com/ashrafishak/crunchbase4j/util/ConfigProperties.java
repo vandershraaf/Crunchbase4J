@@ -5,6 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Loading a singleton configuration instance. 
+ * @author Muhammad Ashraf Ishak
+ *
+ */
 public class ConfigProperties {
 
 	private static Properties properties = null;
