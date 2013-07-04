@@ -1,6 +1,7 @@
 Crunchbase4J
 ============
 [[Download (JAR)](http://ashrafishak.com/crunchbase4j/dist/Crunchbase4J-1.0-SNAPSHOT.jar)]  [[Javadocs](http://ashrafishak.com/crunchbase4j/docs/)]
+
 This is a simple Java library for Crunchbase API. 
 
 ##Usage
@@ -19,6 +20,7 @@ NOTE: I am planning to have the library in the Maven central repository down the
 
 ##Library Guide
 All of methods for processing are located in Crunchbase4J class. Those are:
+
 1. ```public ____Entity getEntity____(String permalink)```
 
 (For example: ```public CompanyEntity getEntityCompany(String companyPermalink)```)
